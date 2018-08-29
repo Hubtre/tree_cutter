@@ -9,5 +9,4 @@ class money:
     def add(self, amount):
         self.balance += amount
 
-    def balance_check(self):
-        return(self.balance)
+

@@ -10,6 +10,7 @@ root = Tk()
 tree_pressed = False
 chosen_tree = 0
 tree_last_down = None
+cash_txt = StringVar()
 
 class gui:
 
@@ -19,9 +20,15 @@ class gui:
         
         stat_frame = Canvas(root, height=720/7,width=1280, bg="grey")
         stat_frame.place(relx=1.0, rely=1.0, x=0, y=0,anchor="se")
-        
-        cash_label = Label(root, text="Cash balance: 0", anchor=SE, justify=RIGHT)
+
+class cash_show():
+    def __init__(self, balance):
+        cash_txt.set("Cash Balance: %d" % balance)
+        cash_label = Label(root, textvariable=balance, anchor=SE, justify=RIGHT)
         cash_label.pack()
+
+    def change(self, balance):
+        cash_txt.set("Cash Balance: %d" % balance)
         
 class tree:
     
@@ -62,6 +69,7 @@ class tree:
     def lose_hp(self,which_tree):
         self.trees[which_tree] -= 1
 
+
         
 
 
@@ -69,6 +77,7 @@ class tree:
 char_balance = money_sys.money()
 
 GUI = gui()
+display_balance = cash_show(char_balance.balance)
 Tree = tree()
 
 #Tree generation
@@ -81,7 +90,6 @@ while(i<60):
 #Game beginning    
 LOOP_ACTIVE = TRUE
 while LOOP_ACTIVE:
-    root.mainloop()
     #generate a tree if one's cut down
     if Tree.num_trees < 60:
         for key in Tree.trees:
@@ -105,9 +113,7 @@ while LOOP_ACTIVE:
         Tree.cut_down(chosen_tree)
         tree_last_down = chosen_tree
         
-    
+#Recalling cash balance
+    display_balance.change(char_balance.balance)
         
-
-    root.wm_attributes("-alpha", True) #Doesn't work yet
-
-
+    root.mainloop()
